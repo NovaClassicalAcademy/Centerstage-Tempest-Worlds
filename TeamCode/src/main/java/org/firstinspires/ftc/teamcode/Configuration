@@ -1,0 +1,29 @@
+Control Hub:
+
+    DC Motors:
+        Port 0:
+        Port 1:
+        Port 2:
+        Port 3:
+    Servo Motors:
+        Port 0:
+        Port 1:
+        Port 2:
+        Port 3:
+        Port 4:
+        Port 5:
+        
+Expansion Hub:
+
+    DC Motors:
+        Port 0:
+        Port 1:
+        Port 2:
+        Port 3:
+    Servo Motors:
+        Port 0:
+        Port 1:
+        Port 2:
+        Port 3:
+        Port 4:
+        Port 5:

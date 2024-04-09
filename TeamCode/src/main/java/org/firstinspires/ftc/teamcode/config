@@ -1,0 +1,29 @@
+Control Hub:
+    Motors:
+        0: fr + par left
+        1: fl + par Right
+        2: bl
+        3: br + perp
+    Servo:
+        0: hammerL
+        1:
+        2: hammerR
+        3:
+        4: dropR
+        5: dropL
+Expansion Hub:
+    Motors:
+        0:
+        1: intake
+        2: liftL
+        3: liftR
+    Servo:
+        0: drone
+        1: rotation
+        2:
+        3: angle
+        4: twist
+        5: gripper
+
+
+
