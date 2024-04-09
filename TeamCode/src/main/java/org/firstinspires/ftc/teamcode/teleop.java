@@ -11,13 +11,11 @@ import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
-import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
-
 import java.util.List;
 @Config
 @TeleOp
 
-public class halfDrivetrain extends OpMode {
+public class teleop extends OpMode {
     public PIDF_Control controller;
     public static double p = 0.0023, i = 0 ,d = 0, f = 0.0001;
     public static int targetPosition = 0;
