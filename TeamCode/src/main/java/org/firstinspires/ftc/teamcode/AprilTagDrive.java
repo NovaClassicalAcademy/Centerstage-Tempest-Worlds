@@ -33,8 +33,8 @@ public class AprilTagDrive extends MecanumDrive {
         // distance FROM robot center TO camera (inches)
         // TODO: tune
         static Vector2d cameraOffset = new Vector2d(
-                -6,
-                4);
+                0,
+                -6);
 
         /*
          * Q model covariance (trust in model), default 0.1 HIGHER IS LESS TRUST

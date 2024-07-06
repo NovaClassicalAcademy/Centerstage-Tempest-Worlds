@@ -1,15 +1,22 @@
-package org.firstinspires.ftc.teamcode.Autonomous;
+/*package org.firstinspires.ftc.teamcode.Autonomous;
 
-import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.PARK_CENTER;
-import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.W_BD_ONE_A;
-import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.W_BD_ONE_B;
-import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.W_BD_THREE_A;
-import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.W_BD_THREE_B;
-import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.W_BD_TWO_A;
-import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.W_BD_TWO_B;
-import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.W_SPIKE_ONE;
-import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.W_SPIKE_THREE;
-import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.W_SPIKE_TWO_ALT;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.PARK_CENTER;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.STACK_BD_1_A;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.STACK_C_1;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.STACK_C_2;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.STACK_C_3;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_BD_ONE_A;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_BD_ONE_B;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_BD_ONE_THREE_OFF;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_BD_THREE_A;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_BD_THREE_B;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_BD_THREE_OFF;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_BD_TWO_A;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_BD_TWO_B;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_BD_TWO_THREE_OFF;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_SPIKE_ONE;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_SPIKE_THREE;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.W_SPIKE_TWO_ALT;
 
 import android.util.Size;
 
@@ -40,15 +47,14 @@ import org.opencv.core.Scalar;
 import java.util.List;
 
 @Autonomous
-public class blueW0 extends OpMode {
+public class redW1 extends OpMode {
     public VisionPortal visionPortal1, visionPortal2;
     private ColourMassDetectionProcessor colourMassDetectionProcessor;
     public AprilTagProcessor aprilTagBack, aprilTagFront;
     public static double Pi = Math.PI;
     public Servo drone;
     public DcMotorEx intake;
-    Action toSpikeL, toBDFromSpikeL, toSpikeM, toBDFromSpikeM, toSpikeR, toBDFromSpikeR, toParkFromWL, toParkFromWM, toParkFromWR;
-
+    Action toSpikeL, toSpikeM, toSpikeR, toParkFromWL, toParkFromWM, toParkFromWR, toCStackFromSpikeL, toBDFromCStackAAL, toBDFromCStackABL, toCStackFromSpikeM, toBDFromCStackAAM, toBDFromCStackABM, toCStackFromSpikeR, toBDFromCStackAAR, toBDFromCStackABR;
     public class Grip {
         private Servo gripper;
 
@@ -225,8 +231,8 @@ public class blueW0 extends OpMode {
         Hammers hammers = new Hammers(hardwareMap);
         pitchingIntake pitchingIntake = new pitchingIntake(hardwareMap);
 
-        Scalar lower = new Scalar(90, 50, 70); // the lower hsv threshold for Blue
-        Scalar upper = new Scalar(128, 255, 255); // the upper hsv threshold for Blue
+        Scalar lower = new Scalar(165, 50, 50); // the lower hsv threshold for RED
+        Scalar upper = new Scalar(180, 255, 255); // the upper hsv threshold for RED
 
         double minArea = 200;
 
@@ -256,50 +262,67 @@ public class blueW0 extends OpMode {
                 .addProcessor(aprilTagBack)
                 .build();
 
+        TwoCamAprilTagDrive rejat = new TwoCamAprilTagDrive(hardwareMap, new Pose2d(-39.50, -63, Math.toRadians(90)), aprilTagBack, aprilTagFront);
+
         intake = hardwareMap.get(DcMotorEx.class, "intake");
 
         drone = hardwareMap.get(Servo.class, "drone");
-
-        TwoCamAprilTagDrive rejat = new TwoCamAprilTagDrive(hardwareMap, new Pose2d(18.50, -63, Math.toRadians(-90)), aprilTagBack, aprilTagFront);
 
         List<LynxModule> allHubs = hardwareMap.getAll(LynxModule.class);
         for (LynxModule hub : allHubs) {
             hub.setBulkCachingMode(LynxModule.BulkCachingMode.AUTO);
         }
+        rejat.pose = new Pose2d(-39.50, -63, Math.toRadians(90));
 
-        rejat.pose = new Pose2d(-39.5, 63, Math.toRadians(-90));
-
-        //W Blue LEFT 2+0 Auto (Park in Center)
+        //W RED LEFT 2+1 Auto (Park in Center)
         toSpikeL = rejat.actionBuilder(rejat.pose)
                 .splineToLinearHeading(W_SPIKE_ONE, Pi/2)
                 .build();
-        toBDFromSpikeL = rejat.actionBuilder(W_SPIKE_ONE)
-                .splineToLinearHeading(W_BD_ONE_A, Pi/2)
-                .splineToLinearHeading(W_BD_ONE_B, Pi/2)
+        toCStackFromSpikeL = rejat.actionBuilder(W_SPIKE_ONE)
+                .splineToLinearHeading(STACK_C_1, Pi/2)
                 .build();
-        toParkFromWL = rejat.actionBuilder(W_BD_ONE_B)
+        toBDFromCStackAAL = rejat.actionBuilder(STACK_C_1)
+                .setReversed(true)
+                .splineToLinearHeading(STACK_BD_1_A, Pi/2)
+                .build();
+        toBDFromCStackABL = rejat.actionBuilder(STACK_BD_1_A)
+                .splineToLinearHeading(W_BD_ONE_THREE_OFF, Pi/2)
+                .build();
+        toParkFromWL = rejat.actionBuilder(W_BD_ONE_THREE_OFF)
                 .splineToLinearHeading(PARK_CENTER, Pi/2)
                 .build();
-        //W Blue Middle 2+0 Auto (Park in Center)
+        //W Red Middle 2+1 Auto (Park in Center)
         toSpikeM = rejat.actionBuilder(rejat.pose)
                 .splineToLinearHeading(W_SPIKE_TWO_ALT, Pi/2)
                 .build();
-        toBDFromSpikeM = rejat.actionBuilder(W_SPIKE_TWO_ALT)
-                .splineToLinearHeading(W_BD_TWO_A, Pi/2)
-                .splineToLinearHeading(W_BD_TWO_B, Pi/2)
+        toCStackFromSpikeM = rejat.actionBuilder(W_SPIKE_TWO_ALT)
+                .splineToLinearHeading(STACK_C_2, Pi/2)
                 .build();
-        toParkFromWM = rejat.actionBuilder(W_BD_TWO_B)
+        toBDFromCStackAAM = rejat.actionBuilder(STACK_C_2)
+                .setReversed(true)
+                .splineToLinearHeading(STACK_BD_1_A, Pi/2)
+                .build();
+        toBDFromCStackABM = rejat.actionBuilder(STACK_BD_1_A)
+                .splineToLinearHeading(W_BD_TWO_THREE_OFF, Pi/2)
+                .build();
+        toParkFromWM = rejat.actionBuilder(W_BD_TWO_THREE_OFF)
                 .splineToLinearHeading(PARK_CENTER, Pi/2)
                 .build();
-        //W Blue Right 2+0 Auto (Park in Center)
+        //W Red Right 2+1 Auto (Park in Center)
         toSpikeR = rejat.actionBuilder(rejat.pose)
                 .splineToLinearHeading(W_SPIKE_THREE, Pi/2)
                 .build();
-        toBDFromSpikeR = rejat.actionBuilder(W_SPIKE_THREE)
-                .splineToLinearHeading(W_BD_THREE_A, Pi/2)
-                .splineToLinearHeading(W_BD_THREE_B, Pi/2)
+        toCStackFromSpikeR = rejat.actionBuilder(W_SPIKE_THREE)
+                .splineToLinearHeading(STACK_C_3, Pi/2)
                 .build();
-        toParkFromWR = rejat.actionBuilder(W_BD_THREE_B)
+        toBDFromCStackAAR = rejat.actionBuilder(STACK_C_3)
+                .setReversed(true)
+                .splineToLinearHeading(STACK_BD_1_A, Pi/2)
+                .build();
+        toBDFromCStackABR = rejat.actionBuilder(STACK_BD_1_A)
+                .splineToLinearHeading(W_BD_THREE_OFF, Pi/2)
+                .build();
+        toParkFromWR = rejat.actionBuilder(W_BD_THREE_OFF)
                 .splineToLinearHeading(PARK_CENTER, Pi/2)
                 .build();
 
@@ -339,17 +362,30 @@ public class blueW0 extends OpMode {
         switch (recordedPropPosition) {
             case LEFT:
                 Actions.runBlocking(
-                        toSpikeL
+                        toSpikeL,
+                        gripper.open()
                 );
                 intake.setPower(-0.5);
                 Actions.runBlocking(
+                                toCStackFromSpikeL
+                );
+                intake.setPower(1);
+                Actions.runBlocking(
                         new SequentialAction(
-                                toBDFromSpikeL,
+                                hammers.intake(),
+                                hammers.zero()
+                        )
+                );
+                intake.setPower(0);
+                Actions.runBlocking(
+                        new SequentialAction(
+                                gripper.close(),
+                                toBDFromCStackAAL,
+                                toBDFromCStackABL,
                                 lift.liftUp(),
                                 gripper.open()
                         )
                 );
-                intake.setPower(0);
                 Actions.runBlocking(
                         new ParallelAction(
                                 lift.liftDown(),
@@ -361,17 +397,30 @@ public class blueW0 extends OpMode {
                 break;
             case MIDDLE:
                 Actions.runBlocking(
-                        toSpikeM
+                        toSpikeM,
+                        gripper.open()
                 );
                 intake.setPower(-0.5);
                 Actions.runBlocking(
+                        toCStackFromSpikeM
+                );
+                intake.setPower(1);
+                Actions.runBlocking(
                         new SequentialAction(
-                                toBDFromSpikeM,
+                                hammers.intake(),
+                                hammers.zero()
+                        )
+                );
+                intake.setPower(0);
+                Actions.runBlocking(
+                        new SequentialAction(
+                                toBDFromCStackAAM,
+                                toBDFromCStackABM,
+                                gripper.close(),
                                 lift.liftUp(),
                                 gripper.open()
                         )
                 );
-                intake.setPower(0);
                 Actions.runBlocking(
                         new ParallelAction(
                                 lift.liftDown(),
@@ -383,17 +432,30 @@ public class blueW0 extends OpMode {
                 break;
             case RIGHT:
                 Actions.runBlocking(
-                        toSpikeR
+                        toSpikeR,
+                        gripper.open()
                 );
                 intake.setPower(-0.5);
                 Actions.runBlocking(
+                        toCStackFromSpikeR
+                );
+                intake.setPower(1);
+                Actions.runBlocking(
                         new SequentialAction(
-                                toBDFromSpikeR,
+                                hammers.intake(),
+                                hammers.zero()
+                        )
+                );
+                intake.setPower(0);
+                Actions.runBlocking(
+                        new SequentialAction(
+                                toBDFromCStackAAR,
+                                toBDFromCStackABR,
+                                gripper.close(),
                                 lift.liftUp(),
                                 gripper.open()
                         )
                 );
-                intake.setPower(0);
                 Actions.runBlocking(
                         new ParallelAction(
                                 lift.liftDown(),
@@ -416,3 +478,5 @@ public class blueW0 extends OpMode {
         visionPortal2.close();
     }
 }
+
+ */

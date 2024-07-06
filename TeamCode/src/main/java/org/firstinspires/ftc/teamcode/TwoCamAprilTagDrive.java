@@ -34,12 +34,12 @@ public class TwoCamAprilTagDrive extends MecanumDrive {
         // distance FROM robot center TO camera (inches)
         // TODO: tune
         static Vector2d camera1Offset = new Vector2d(
-                -6,
-                4);
+                0,
+                10);
         // if you don't have a second camera this doesn't matter
         static Vector2d camera2Offset = new Vector2d(
                 0,
-                -5);//6);
+                -7);
         static double cameraYawOffset = Math.toRadians(180); // TODO: tune
         /*
          * Q model covariance (trust in model), default 0.1

@@ -2,13 +2,11 @@ package org.firstinspires.ftc.teamcode;
 
 import com.acmerobotics.dashboard.config.Config;
 import com.qualcomm.hardware.lynx.LynxModule;
-import com.qualcomm.hardware.rev.RevHubOrientationOnRobot;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.IMU;
 import com.qualcomm.robotcore.hardware.Servo;
 
 import java.util.List;
@@ -20,9 +18,11 @@ public class teleop extends OpMode {
     public static double p = 0.0023, i = 0 ,d = 0, f = 0.0001;
     public static int targetPosition = 0;
     public Servo outtake, twist, axonL, axonR, drop1, drop2, hammerL, hammerR, drone;
+
     public DcMotorEx liftL, liftR, intake, frontLeft, frontRight, backLeft, backRight;
     public double multiplier = 1;
     private boolean extended = false;
+    public double strafeCoefficient = 0.4;
 
     @Override
     public void init() {
@@ -66,16 +66,17 @@ public class teleop extends OpMode {
     }
     @Override
     public void loop() {
-        double intakePower = gamepad2.left_trigger;
-        double outtakePower = -gamepad2.right_trigger;
+        double intakePower = gamepad2.left_trigger * 1;
+        double outtakePower = -gamepad2.right_trigger * 1;
 
         if(gamepad1.left_trigger > 0.1) {
             multiplier = 0.6;
         } else {
             multiplier = 1;
         }
+
         double y = -gamepad1.left_stick_y; // Remember, Y stick value is reversed
-        double x = gamepad1.left_stick_x* 1.1; // Counteract imperfect strafing
+        double x = gamepad1.left_stick_x * strafeCoefficient; // Counteract imperfect strafing
         double rx = gamepad1.right_stick_x;
 
         double denominator = Math.max(Math.abs(y) + Math.abs(x) + Math.abs(rx), 1);
@@ -98,7 +99,6 @@ public class teleop extends OpMode {
             }
             if (gamepad2.right_stick_x < -0.25 && (gamepad2.right_stick_y >= -0.1 && gamepad2.right_stick_y <= 0.1)){
                 twist.setPosition(0.85);
-
             }
             if (gamepad2.right_stick_x > 0.25 && gamepad2.right_stick_y > 0.25){
                 twist.setPosition(0);
@@ -123,8 +123,8 @@ public class teleop extends OpMode {
         }
         if(gamepad2.left_stick_y <= -0.1){
             targetPosition += 15;
-            if(targetPosition >= 2950){
-                targetPosition = 2950;
+            if(targetPosition >= 3150){
+                targetPosition = 3150;
             }
         } else if(gamepad2.left_stick_y >= 0.1){
             targetPosition -= 15;
@@ -138,13 +138,13 @@ public class teleop extends OpMode {
                 axonL.setPosition(0.5);
                 twist.setPosition(0.5);
             } else {
-                axonR.setPosition(0.40);
-                axonL.setPosition(0.43);
+                axonR.setPosition(0.45);
+                axonL.setPosition(0.38);
                 extended = true;
             }
         } else {
             axonR.setPosition(0.13);
-            axonL.setPosition(0.5);
+            axonL.setPosition(0.41);
             twist.setPosition(0.5);
             extended = false;
         }
@@ -156,8 +156,8 @@ public class teleop extends OpMode {
             intake.setPower(0);
         }
         if (gamepad2.dpad_up) { // up
-            drop1.setPosition(0.5);
-            drop2.setPosition(0.5);
+            drop1.setPosition(0.4);
+            drop2.setPosition(0.6);
         } else if (gamepad2.dpad_down) {
             drop1.setPosition(0.7);
             drop2.setPosition(0.3);
@@ -181,7 +181,5 @@ public class teleop extends OpMode {
 
         liftL.setPower(-liftPower);
         liftR.setPower(-liftPower);
-
-        telemetry.update();
     }
 }
