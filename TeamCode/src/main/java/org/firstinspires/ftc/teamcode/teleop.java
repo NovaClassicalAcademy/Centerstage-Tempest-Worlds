@@ -139,7 +139,7 @@ public class teleop extends OpMode {
                 twist.setPosition(0.5);
             } else {
                 axonR.setPosition(0.45);
-                axonL.setPosition(0.38);
+                axonL.setPosition(0.46);
                 extended = true;
             }
         } else {

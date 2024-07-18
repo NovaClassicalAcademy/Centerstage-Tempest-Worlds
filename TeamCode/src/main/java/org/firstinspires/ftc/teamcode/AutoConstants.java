@@ -14,9 +14,13 @@ public class AutoConstants {
         public static Pose2d W_START = new Pose2d(-39.5, 63, Math.toRadians(-90));
 
         //spikes
-        public static Pose2d BD_SPIKE_ONE = new Pose2d(33, 33.5, Math.toRadians(-135));
-        public static Pose2d BD_SPIKE_TWO = new Pose2d(22, 32, Math.toRadians(-90));
-        public static Pose2d BD_SPIKE_THREE = new Pose2d(10, 31, Math.toRadians(-135));
+        public static Pose2d BD_SPIKE_ONE = new Pose2d(27, 37, Math.toRadians(-45));
+        public static Pose2d BD_SPIKE_TWO = new Pose2d(22, 36.5, Math.toRadians(-90));
+        public static Pose2d BD_SPIKE_THREE = new Pose2d(21, 37, Math.toRadians(-135));
+
+        public static Pose2d BD_PURPLE_ONE = new Pose2d(27, 44, Math.toRadians(-45));
+        public static Pose2d BD_PURPLE_TWO = new Pose2d(22, 40, Math.toRadians(-90));
+        public static Pose2d BD_PURPLE_THREE = new Pose2d(21, 43, Math.toRadians(-135));
 
         public static Pose2d W_SPIKE_ONE = new Pose2d(-37, 35, Math.toRadians(180));
         public static Pose2d W_SPIKE_TWO = new Pose2d(-39, 12, Math.toRadians(-90));
@@ -48,13 +52,13 @@ public class AutoConstants {
         public static Pose2d W_BD_TWO_OFF = new Pose2d(53.5, 36.75, Math.toRadians(180));
         public static Pose2d W_BD_THREE_OFF = new Pose2d(53.5, 31, Math.toRadians(180));
 
-        public static Pose2d BD_BD_ONE_OFF = new Pose2d(54, 43, Math.toRadians(180));
-        public static Pose2d BD_BD_TWO_OFF = new Pose2d(55, 37, Math.toRadians(180));
-        public static Pose2d BD_BD_THREE_OFF = new Pose2d(54, 25.5, Math.toRadians(180));
+        public static Pose2d BD_BD_ONE_OFF = new Pose2d(56, 40, Math.toRadians(180));
+        public static Pose2d BD_BD_TWO_OFF = new Pose2d(54.5, 34, Math.toRadians(180));
+        public static Pose2d BD_BD_THREE_OFF = new Pose2d(55, 28, Math.toRadians(180));
 
-        public static Pose2d ensuredDropL = new Pose2d(50, 43, Math.toRadians(180));
-        public static Pose2d ensuredDropM = new Pose2d(50, 37, Math.toRadians(180));
-        public static Pose2d ensuredDropR = new Pose2d(50, 27, Math.toRadians(180));
+        public static Pose2d ensuredDropL = new Pose2d(56, 42, Math.toRadians(180));
+        public static Pose2d ensuredDropM = new Pose2d(54.5, 37, Math.toRadians(180));
+        public static Pose2d ensuredDropR = new Pose2d(53, 28, Math.toRadians(180));
 
         //parks
         public static Pose2d PARK_CORNER = new Pose2d(52, 60, Math.toRadians(180));

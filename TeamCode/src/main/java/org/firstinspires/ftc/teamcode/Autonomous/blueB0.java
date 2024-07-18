@@ -3,6 +3,9 @@ package org.firstinspires.ftc.teamcode.Autonomous;
 import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.BD_BD_ONE_OFF;
 import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.BD_BD_THREE_OFF;
 import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.BD_BD_TWO_OFF;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.BD_PURPLE_ONE;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.BD_PURPLE_THREE;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.BD_PURPLE_TWO;
 import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.BD_SPIKE_ONE;
 import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.BD_SPIKE_THREE;
 import static org.firstinspires.ftc.teamcode.AutoConstants.Blue.BD_SPIKE_TWO;
@@ -42,7 +45,7 @@ public class blueB0 extends OpMode {
     public VisionPortal visionPortal1, visionPortal2;
     private ColourMassDetectionProcessor colourMassDetectionProcessor;
     public static double Pi = Math.PI;
-    Action toSpikeL, toBDFromSpikeL, toSpikeM, toBDFromSpikeM, toSpikeR, toBDFromSpikeR, toParkFromBDL, toParkFromBDM, toParkFromBDR, dropEnsuredL, dropEnsuredM, dropEnsuredR;
+    Action toSpikeL, toBDFromSpikeL, toSpikeM, toBDFromSpikeM, toSpikeR, toBDFromSpikeR, toParkFromBDL, toParkFromBDM, toParkFromBDR, dropEnsuredL, dropEnsuredM, dropEnsuredR, purpleEnsuredL, purpleEnsuredM, purpleEnsuredR;
 
     public class Grip {
         private Servo gripper;
@@ -259,7 +262,10 @@ public class blueB0 extends OpMode {
         toSpikeL = rejat.actionBuilder(rejat.pose)
                 .splineToLinearHeading(BD_SPIKE_ONE, 0)
                 .build();
-        toBDFromSpikeL = rejat.actionBuilder(BD_SPIKE_ONE)
+        purpleEnsuredL = rejat.actionBuilder(rejat.pose)
+                .splineToLinearHeading(BD_PURPLE_ONE, 0)
+                .build();
+        toBDFromSpikeL = rejat.actionBuilder(BD_PURPLE_ONE)
                 .setReversed(true)
                 .splineToLinearHeading(BD_BD_ONE_OFF, 0)
                 .build();
@@ -275,7 +281,10 @@ public class blueB0 extends OpMode {
         toSpikeM = rejat.actionBuilder(rejat.pose)
                 .splineToLinearHeading(BD_SPIKE_TWO, 0)
                 .build();
-        toBDFromSpikeM = rejat.actionBuilder(BD_SPIKE_TWO)
+        purpleEnsuredM = rejat.actionBuilder(BD_SPIKE_TWO)
+                .splineToLinearHeading(BD_PURPLE_TWO, 0)
+                .build();
+        toBDFromSpikeM = rejat.actionBuilder(BD_PURPLE_TWO)
                 .splineToLinearHeading(BD_BD_TWO_OFF, 0)
                 .build();
         dropEnsuredM = rejat.actionBuilder(BD_BD_TWO_OFF)
@@ -288,7 +297,10 @@ public class blueB0 extends OpMode {
         toSpikeR = rejat.actionBuilder(rejat.pose)
                 .splineToLinearHeading(BD_SPIKE_THREE, 0)
                 .build();
-        toBDFromSpikeR = rejat.actionBuilder(BD_SPIKE_THREE)
+        purpleEnsuredR = rejat.actionBuilder(BD_SPIKE_THREE)
+                .splineToLinearHeading(BD_PURPLE_THREE, 0)
+                .build();
+        toBDFromSpikeR = rejat.actionBuilder(BD_PURPLE_THREE)
                 .setReversed(true)
                 .splineToLinearHeading(BD_BD_THREE_OFF, 0)
                 .build();
