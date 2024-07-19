@@ -74,9 +74,13 @@ public class AutoConstants {
         public static Pose2d W_START = new Pose2d(-39.5, -63, Math.toRadians(90));
 
         //spikes
-        public static Pose2d BD_SPIKE_THREE = new Pose2d(35, -33.5, Math.toRadians(135));
-        public static Pose2d BD_SPIKE_TWO = new Pose2d(25, -31, Math.toRadians(135));
-        public static Pose2d BD_SPIKE_ONE = new Pose2d(14, -31, Math.toRadians(180));
+        public static Pose2d BD_SPIKE_THREE = new Pose2d(27, -37, Math.toRadians(45));
+        public static Pose2d BD_SPIKE_TWO = new Pose2d(22, -37, Math.toRadians(90));
+        public static Pose2d BD_SPIKE_ONE = new Pose2d(18, -37, Math.toRadians(135));
+
+        public static Pose2d BD_PURPLE_ONE = new Pose2d(18.5, -40, Math.toRadians(135));
+        public static Pose2d BD_PURPLE_TWO = new Pose2d(18.5, -40, Math.toRadians(90));
+        public static Pose2d BD_PURPLE_THREE = new Pose2d(22, -40, Math.toRadians(45));
 
         public static Pose2d BD_SPIKE_ONE_extra = new Pose2d(14, -31, Math.toRadians(180));
         public static Pose2d BD_SPIKE_THREE_extra = new Pose2d(35, -33.5, Math.toRadians(135));
@@ -122,9 +126,10 @@ public class AutoConstants {
         public static Pose2d W_BD_ONE_TWO_OFF = new Pose2d(52.5, -32, Math.toRadians(-180));
         public static Pose2d W_BD_ONE_ONE_OFF = new Pose2d(52.5, -29.5, Math.toRadians(-180));
 
-        public static Pose2d BD_BD_THREE_OFF = new Pose2d(53, -43, Math.toRadians(-180));
-        public static Pose2d BD_BD_TWO_OFF = new Pose2d(55, -37, Math.toRadians(-180));
-        public static Pose2d BD_BD_ONE_OFF = new Pose2d(54, -27, Math.toRadians(-180));
+        public static Pose2d BD_BD_THREE_OFF = new Pose2d(54.5, -43, Math.toRadians(-180));
+        public static Pose2d BD_BD_TWO_OFF = new Pose2d(54.5, -36, Math.toRadians(-180));
+        public static Pose2d BD_BD_ONE_OFF = new Pose2d(54.5, -27, Math.toRadians(-180));
+
         public static Pose2d BD_BD_ONE_OFF_FORWARDL = new Pose2d(51, -27, Math.toRadians(-180));
         public static Pose2d BD_BD_ONE_OFF_FORWARDM = new Pose2d(51, -35, Math.toRadians(-180));
         public static Pose2d BD_BD_ONE_OFF_FORWARDR = new Pose2d(51, -43, Math.toRadians(-180));

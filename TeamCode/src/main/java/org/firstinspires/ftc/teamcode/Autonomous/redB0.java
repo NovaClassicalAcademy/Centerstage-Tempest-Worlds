@@ -6,6 +6,9 @@ import static org.firstinspires.ftc.teamcode.AutoConstants.Red.BD_BD_ONE_OFF_FOR
 import static org.firstinspires.ftc.teamcode.AutoConstants.Red.BD_BD_ONE_OFF_FORWARDR;
 import static org.firstinspires.ftc.teamcode.AutoConstants.Red.BD_BD_THREE_OFF;
 import static org.firstinspires.ftc.teamcode.AutoConstants.Red.BD_BD_TWO_OFF;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.BD_PURPLE_ONE;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.BD_PURPLE_THREE;
+import static org.firstinspires.ftc.teamcode.AutoConstants.Red.BD_PURPLE_TWO;
 import static org.firstinspires.ftc.teamcode.AutoConstants.Red.BD_SPIKE_ONE;
 import static org.firstinspires.ftc.teamcode.AutoConstants.Red.BD_SPIKE_THREE;
 import static org.firstinspires.ftc.teamcode.AutoConstants.Red.BD_SPIKE_TWO;
@@ -47,7 +50,7 @@ public class redB0 extends OpMode {
     private ColourMassDetectionProcessor colourMassDetectionProcessor;
     public static double Pi = Math.PI;
     public DcMotorEx intake;
-    Action toSpikeL, toBDFromSpikeL, toSpikeM, toBDFromSpikeM, toSpikeR, toBDFromSpikeR, toParkFromBDL, toParkFromBDM, toParkFromBDR, dropEnsuredL, dropEnsuredM, dropEnsuredR;
+    Action toSpikeL, toBDFromSpikeL, toSpikeM, toBDFromSpikeM, toSpikeR, toBDFromSpikeR, toParkFromBDL, toParkFromBDM, toParkFromBDR, dropEnsuredL, dropEnsuredM, dropEnsuredR, purpleEnsuredL, purpleEnsuredM, purpleEnsuredR;
 
     public class Grip {
         private Servo gripper;
@@ -157,10 +160,9 @@ public class redB0 extends OpMode {
             liftR.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             liftL.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            liftL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.BRAKE);
+            liftL.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
 
             liftR.setZeroPowerBehavior(DcMotorEx.ZeroPowerBehavior.FLOAT);
-
         }
 
         public class LiftUp implements Action {
@@ -192,7 +194,7 @@ public class redB0 extends OpMode {
         }
 
         public Action liftUp() {
-            return new LiftUp();
+            return new Lift.LiftUp();
         }
 
         public class OuttakeIn implements Action {
@@ -205,7 +207,7 @@ public class redB0 extends OpMode {
             }
         }
         public Action outtakeIn() {
-            return new OuttakeIn();
+            return new Lift.OuttakeIn();
         }
 
         public class LiftDown implements Action {
@@ -214,8 +216,7 @@ public class redB0 extends OpMode {
             @Override
             public boolean run(@NonNull TelemetryPacket packet) {
                 if (!initialized) {
-                    liftL.setPower(0.3);
-                    //liftR.setPower(0.3);
+                    liftR.setPower(0.3);
                     initialized = true;
                 }
 
@@ -224,14 +225,13 @@ public class redB0 extends OpMode {
                 if (pos > 80) {
                     return true;
                 } else {
-                    liftL.setPower(0);
-                    //liftR.setPower(0);
+                    liftR.setPower(0);
                     return false;
                 }
             }
         }
         public Action liftDown() {
-            return new LiftDown();
+            return new Lift.LiftDown();
         }
     }
 
@@ -267,7 +267,10 @@ public class redB0 extends OpMode {
         toSpikeL = rejat.actionBuilder(rejat.pose)
                 .splineToLinearHeading(BD_SPIKE_ONE, 0)
                 .build();
-        toBDFromSpikeL = rejat.actionBuilder(BD_SPIKE_ONE)
+        purpleEnsuredL = rejat.actionBuilder(BD_SPIKE_ONE)
+                .splineToLinearHeading(BD_PURPLE_ONE, 0)
+                .build();
+        toBDFromSpikeL = rejat.actionBuilder(BD_PURPLE_ONE)
                 .setReversed(true)
                 .splineToLinearHeading(BD_BD_ONE_OFF, 0)
                 .build();
@@ -283,7 +286,10 @@ public class redB0 extends OpMode {
         toSpikeM = rejat.actionBuilder(rejat.pose)
                 .splineToLinearHeading(BD_SPIKE_TWO, 0)
                 .build();
-        toBDFromSpikeM = rejat.actionBuilder(BD_SPIKE_TWO)
+        purpleEnsuredM = rejat.actionBuilder(BD_SPIKE_TWO)
+                .splineToLinearHeading(BD_PURPLE_TWO, 0)
+                .build();
+        toBDFromSpikeM = rejat.actionBuilder(BD_PURPLE_TWO)
                 .splineToLinearHeading(BD_BD_TWO_OFF, 0)
                 .build();
         dropEnsuredM = rejat.actionBuilder(BD_BD_TWO_OFF)
@@ -296,7 +302,10 @@ public class redB0 extends OpMode {
         toSpikeR = rejat.actionBuilder(rejat.pose)
                 .splineToLinearHeading(BD_SPIKE_THREE, 0)
                 .build();
-        toBDFromSpikeR = rejat.actionBuilder(BD_SPIKE_THREE)
+        purpleEnsuredR = rejat.actionBuilder(BD_SPIKE_THREE)
+                .splineToLinearHeading(BD_PURPLE_THREE, 0)
+                .build();
+        toBDFromSpikeR = rejat.actionBuilder(BD_PURPLE_THREE)
                 .setReversed(true)
                 .splineToLinearHeading(BD_BD_THREE_OFF, 0)
                 .build();
@@ -306,7 +315,7 @@ public class redB0 extends OpMode {
                 .build();
         toParkFromBDR = rejat.actionBuilder(BD_BD_ONE_OFF_FORWARDR)
                 .setReversed(true)
-                .splineToLinearHeading(PARK_CORNER, Pi)
+                .splineToLinearHeading(PARK_CORNER, Pi/2)
                 .build();
 
         Actions.runBlocking(
@@ -351,7 +360,8 @@ public class redB0 extends OpMode {
                 Actions.runBlocking(
                         new SequentialAction(
                                 toSpikeL,
-                                hammers.zero()
+                                hammers.zero(),
+                                purpleEnsuredL
                         )
                 );
                 try {
@@ -383,7 +393,8 @@ public class redB0 extends OpMode {
                 Actions.runBlocking(
                         new SequentialAction(
                                 toSpikeM,
-                                hammers.zero()
+                                hammers.zero(),
+                                purpleEnsuredM
                         )
                 );
                 Actions.runBlocking(
@@ -409,7 +420,8 @@ public class redB0 extends OpMode {
                 Actions.runBlocking(
                         new SequentialAction(
                                 toSpikeR,
-                                hammers.zero()
+                                hammers.zero(),
+                                purpleEnsuredR
                         )
                 );
                 Actions.runBlocking(
